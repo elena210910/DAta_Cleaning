@@ -27,8 +27,11 @@ El script se divide en dos partes:
 ***Bibliotecas Utilizadas***
 
 **os**: Para manejar operaciones del sistema de archivos.
+
 **csv**: Para leer y escribir archivos CSV.
+
 **re**: Para trabajar con expresiones regulares y buscar archivos con un patrón específico.
+
 **pandas**: Para manejar y manipular datos en DataFrames.
 
 ***Problema Encontrado y Solución***
