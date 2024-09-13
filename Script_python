@@ -1,0 +1,61 @@
+import os
+import csv
+import re
+import pandas as pd
+
+# Creo una función para extraer los archivos necesarios
+def process_files(src_folder, dest_folder):
+    combined_data = []   
+    header_written = False #se utiliza para rastrear si el encabezado ya se ha escrito en el archivo final.
+    expected_header = ['date', 'product', 'store', 'cost'] #lista que contiene los encabezados de columna esperados
+    file_pattern = re.compile(r'\d{4}-\d{2}-\d{2}-\d{2}-\d{2}-\d+\.csv') # patrón para buscar los archivos necesarios
+
+    # Creamos la carpeta de destino si no existe
+    os.makedirs(dest_folder, exist_ok=True)
+
+    # Recorremos todos los archivos en la carpeta de origen
+    for filename in os.listdir(src_folder):
+        if file_pattern.match(filename):   # si coincide con el patrón anterior \d{4}-\d{2}-\d{2}-\d{2}-\d{2}-\d+\.csv
+            file_path = os.path.join(src_folder, filename) #une la ruta de la carpeta y el nombre del archivo
+            print(f"Procesando archivo: {file_path}")  
+            if os.path.getsize(file_path) > 0: 
+                with open(file_path, mode='r', encoding='utf-8') as file:
+                    reader = csv.DictReader(file, delimiter=';') # csv.DictReader lee el archivo como CSV con delimitador ;
+                    header = reader.fieldnames  # Leemos el encabezado
+                    print(f"Encabezado del archivo: {header}")  # Mostramos el encabezado del archivo
+                    if set(expected_header).issubset(header):  
+                        if not header_written:  # Si el encabezado aún no se ha escrito (header_written=False)
+                            combined_data.append(expected_header)  # lo añadimos a combined_data, Añadimos el encabezado solo una vez
+                            header_written = True 
+                        for row in reader:
+                            filtered_row = {key: row[key] for key in expected_header} 
+                            combined_data.append(filtered_row.values())# los valores de filtered_row se añaden a la lista
+                    else:
+                        print(f"Encabezado incorrecto en el archivo: {file_path}")
+
+    # Escribimos los datos combinados en un nuevo archivo con comas como delimitador
+    combined_file_path = os.path.join(dest_folder, 'combined_data.csv') # creamos la ruta completa al archivo final combined_data.csv en la carpeta de destino dest_folder
+
+    with open(combined_file_path, mode='w', encoding='utf-8', newline='') as combined_file:
+        writer = csv.writer(combined_file, delimiter=',')
+        for row in combined_data:
+            writer.writerow(row) 
+
+    # Leemos los datos en un DataFrame y reiniciamos los índices. 
+    if os.path.getsize(combined_file_path) > 0:  
+        combined_df = pd.read_csv(combined_file_path, delimiter=',')
+        combined_df.reset_index(drop=True, inplace=True) 
+        combined_df.columns = combined_df.columns.str.strip()  
+
+        # Procesamos la fecha como cadena para evitar errores
+        combined_df['date'] = combined_df['date'].astype(str) #Permite guardar fechas incorrectas como cadenas, evitando errores
+
+        # Ordenamos los datos por la columna 'date' en orden ascendente, luego por 'cost'
+        combined_df.sort_values(by=['date', 'cost'], inplace=True)
+
+        combined_df.to_csv(combined_file_path, index=False, sep=',')# Escribimos los datos del DataFrame de nuevo en el archivo CSV, eliminamos los índices si no son necesarios
+
+# Ejemplo de uso de la función. Llamamos a la función.
+src_folder = 'reports-main'   # se debe especificar la ruta de la carpeta de origen
+dest_folder = 'comb_reports'  # y la ruta de destino
+process_files(src_folder, dest_folder)
