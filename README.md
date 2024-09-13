@@ -14,7 +14,7 @@ que envían. Peor aún, también envían archivos adicionales con otras extensio
 ***Objetivo***
 
 El objetivo es combinar los registros de ventas (tickets) de cada tienda en un conjunto de datos unificado. Los archivos de tickets tienen el formato AAAA-MM-DD-HH-MM-idcliente.csv. 
-(Año-mes-dia-hora-minutos-de cliente). En el nuevo archivo, solo necesitamos guardar las columnas date, product, store y cost, sin incluir el ID del cliente.
+(Año-mes-dia-hora-minutos-ID de cliente). En el nuevo archivo, solo necesitamos guardar las columnas date, product, store y cost, sin incluir el ID del cliente.
 
 ***Estructura del Script***
 
