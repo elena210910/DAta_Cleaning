@@ -41,7 +41,7 @@ uno de los tickets tenía una fecha inexistente en febrero, lo que causaba un er
 Sin embargo, este ticket coincidía con nuestro patrón de búsqueda y era necesario agregarlo al archivo combinado.
 Para resolver este problema, procesé la fecha como una cadena (str) en lugar de un tipo de dato de fecha, lo que permitió evitar errores y mantener la integridad de los datos.
 
-## [Ejemplo de Código](https://github.com/elena210910/DAta_Cleaning/blob/main/Script_python)
-## [Ejemplo - Los archivos de tickets antes de Limpieza de Datos](https://github.com/elena210910/DAta_Cleaning/blob/main/Ejemplo%20de%20los%20tickets.png)
+**[Ejemplo de Código](https://github.com/elena210910/DAta_Cleaning/blob/main/Script_python)**
+**[Ejemplo - Los archivos de tickets antes de Limpieza de Datos]**(https://github.com/elena210910/DAta_Cleaning/blob/main/Ejemplo%20de%20los%20tickets.png)
 
-## [El resultado final](https://github.com/elena210910/DAta_Cleaning/blob/main/Resultado_final.png)
+**[El resultado final](https://github.com/elena210910/DAta_Cleaning/blob/main/Resultado_final.png)**
